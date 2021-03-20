@@ -9,6 +9,7 @@
     MISO (DOUT)  12
     SCK          13
 */
+
 #include "LiquidCrystal_I2C.h"
 #include "Honeywell_RSC.h"
 #include <Wire.h>
@@ -41,23 +42,19 @@ Honeywell_RSC rsc(
 volatile double CalibrationValue=0;
 unsigned long time=0;
 int panastatus = ABSENT;       //panasonic sensor status
-int adastatus = ABSENT;       //adafruit sensor status. needs to be set manually because there is no ack from device to check presence
+int adastatus = ABSENT;       //adafruit sensor status. needs to be set manually in this implementation
 
 void setup() {
-  lcd0.begin();
-  
   // open serial communication
   Serial.begin(115200);
-
   // open SPI communication
   SPI.begin();
-
   // open I2C communication
   Wire.begin();
-
   // open bitbanged UART 
   pmSerial.begin(9600);
   
+  lcd0.begin();
   // allowtime to setup
   delay(1000);
 
@@ -93,14 +90,14 @@ void setup() {
     Serial.println("Panasonic GCJA5 did not respond.");
   } else{
     panastatus = PRESENT;
-    Serial.println("Reached GCJA5 Sensor\n");
+    Serial.println("GCJA5 Sensor present \n");
   }
 
   if (aqi.begin_UART(&pmSerial) == false){
-    //presently, the aqi.begin_UART function only returns true. there is no host-device ack to check
+    //presently, the aqi.begin_UART function only returns true, see docs https://github.com/adafruit/Adafruit_PM25AQI/blob/master/Adafruit_PM25AQI.cpp
   }
   if(adastatus == PRESENT){
-    Serial.println("Reached ADAFRUIT sensor\n");
+    Serial.println("ADAFRUIT sensor present \n");
   }
   
   Serial.println("Time (s), Pressure, GCJA5 ug/m3: PM1.0, PM2.5, PM10, ADAFRUIT ug/m3: PM1.0, PM2.5, PM10");
@@ -134,10 +131,10 @@ void loop() {
    
     Serial.print(" ");
   } else {
-    Serial.print("-1, -1, -1");     //otherwise print -1 to signal sensor absent
+    Serial.print("-1, -1, -1");     //otherwise print -1 for sensor absent
   }
 
-  if(adastatus == PRESENT){   //print adafruit data if preesnt. remember: need to manually set adafruit status
+  if(adastatus == PRESENT){   //print adafruit data if preesnt. remember: need to manually set adafruit status (it's bad code, sorry)
     PM25_AQI_Data data;
 
     if(! aqi.read(&data)){
@@ -154,7 +151,7 @@ void loop() {
     Serial.print(data.pm100_standard);
     Serial.print(" ");
   } else {
-    Serial.print("-1, -1, -1");     //otherwise print -1 to signal sensor absent
+    Serial.print("-1, -1, -1");     //otherwise print -1 for sensor absent
   }
 
   Serial.print(" \n");
