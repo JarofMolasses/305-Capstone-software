@@ -1,4 +1,5 @@
 /*
+ * Print the pressure and particle data to Serial stream for analysis.
   circuit:
   pin name     pin number on Arduino
     DRDY         6
