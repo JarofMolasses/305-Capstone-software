@@ -12,7 +12,7 @@ import serial.tools.list_ports
 
 import matplotlib
 import matplotlib.pyplot as plt
-matplotlib.use('tkAgg')             #written for Spyder, set tkinter as graphics handler
+#matplotlib.use('tkAgg')             #written for Spyder, set tkinter as graphics handler
 import matplotlib.animation as animation
 
 import numpy as np
@@ -24,8 +24,8 @@ import time
 #interactive plot - not needed?
 #plt.ion()
 
-#global arrays for graphing, plot setup
-#TODO: pack this up into a class
+#global arrays for graphing, initial plot setup
+#TODO: pack this up into a class so we don't have to run this nonsense at the beginnning 
 fig = plt.figure()
 ax = fig.add_subplot(1, 1, 1)
 times = []
@@ -123,6 +123,7 @@ def captureSerial():                 #main program
             lines += 1
             
     ArduinoStream.close
+
     print("\n\nWell, the moment has passed. Back to work")
     return 1
     
