@@ -99,39 +99,40 @@ void setup() {
   if(adastatus == PRESENT){
     Serial.println("ADAFRUIT sensor present \n");
   }
-  
+
   Serial.println("Time (s), Pressure, GCJA5 ug/m3: PM1.0, PM2.5, PM10, ADAFRUIT ug/m3: PM1.0, PM2.5, PM10");
+  Serial.println("End of Header");    //check for this in the python app
 }
 
 int sec = 0;
 void loop() {
   Serial.print(sec);
-  Serial.print(" ");
+  Serial.print(",");
 
   double pressure = (rsc.get_pressure()*1000-CalibrationValue)/1.1;
   Serial.print(pressure);
   //Serial.print(rsc.get_pressure());
-  Serial.print(" ");
+  Serial.print(",");
   lcd0.home();
   lcd0.print("P (Pa)  "); lcd0.print(pressure);
 
   if(panastatus == PRESENT){    //print panasonic data if present
     float pm1_0 = myAirSensor.getPM1_0();
     Serial.print(pm1_0, 2); //Print float with 2 decimals
-    Serial.print(" ");
+    Serial.print(",");
   
     float pm2_5 = myAirSensor.getPM2_5();
     Serial.print(pm2_5, 2);
     lcd0.setCursor(0,1);
     lcd0.print("PM2.5   "); lcd0.print(pm2_5);
-    Serial.print(" ");
+    Serial.print(",");
   
     float pm10 = myAirSensor.getPM10();
     Serial.print(pm10, 2);
    
-    Serial.print(" ");
+    Serial.print(",");
   } else {
-    Serial.print("-1 -1 -1");     //otherwise print -1 for sensor absent
+    Serial.print("n,n,n,");     //otherwise print -1 for sensor absent
   }
 
   if(adastatus == PRESENT){   //print adafruit data if preesnt. remember: need to manually set adafruit status (it's bad code, sorry)
@@ -143,18 +144,18 @@ void loop() {
       return;
     }
     Serial.print(data.pm10_standard);
-    Serial.print(" ");
+    Serial.print(",");
 
     Serial.print(data.pm25_standard);
-    Serial.print(" ");
+    Serial.print(",");
 
     Serial.print(data.pm100_standard);
-    Serial.print(" ");
+    Serial.print(",");
   } else {
-    Serial.print("-1 -1 -1");     //otherwise print -1 for sensor absent
+    Serial.print("n,n,n,");     //otherwise print -1 for sensor absent
   }
 
-  Serial.print(" \n");
+  Serial.print("\n");
   sec++;
   delay(DELAY_PERIOD);
 }
