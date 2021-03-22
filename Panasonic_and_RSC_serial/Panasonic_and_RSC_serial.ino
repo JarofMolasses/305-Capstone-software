@@ -104,6 +104,7 @@ void setup() {
 
 int sec = 0;
 void loop() {
+  lcd0.clear();
   Serial.print(sec);
   Serial.print(",");
 
@@ -111,9 +112,10 @@ void loop() {
   Serial.print(pressure);
   //Serial.print(rsc.get_pressure());
   Serial.print(",");
+
   lcd0.home();
   lcd0.print("P (Pa)  "); lcd0.print(pressure);
-
+  
   if(panastatus == PRESENT){    //print panasonic data if present
     float pm1_0 = myAirSensor.getPM1_0();
     Serial.print(pm1_0, 2); //Print float with 2 decimals
@@ -121,10 +123,10 @@ void loop() {
   
     float pm2_5 = myAirSensor.getPM2_5();
     Serial.print(pm2_5, 2);
+    Serial.print(",");
     lcd0.setCursor(0,1);
     lcd0.print("PM2.5   "); lcd0.print(pm2_5);
-    Serial.print(",");
-  
+    
     float pm10 = myAirSensor.getPM10();
     Serial.print(pm10, 2);
    
@@ -154,6 +156,7 @@ void loop() {
   }
 
   Serial.print("\n");
+
   sec++;
   delay(DELAY_PERIOD);
 }
