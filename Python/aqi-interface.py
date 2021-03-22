@@ -12,12 +12,12 @@ import serial.tools.list_ports
 
 import matplotlib
 import matplotlib.pyplot as plt
-#matplotlib.use('tkAgg')             #written for Spyder, set tkinter as graphics handler
-import matplotlib.animation as animation
+#matplotlib.use('tkAgg')                     #set tkinter as graphics backend
+#import matplotlib.animation as animation    #strictly speaking using this animation API would be much better
 
 import numpy as np
 import pandas as pd
-
+ 
 from pathlib import Path
 import time
 
@@ -32,8 +32,9 @@ times = []
 pana10 = []
 pana25 = []
 pana100 = []
-ax.plot(times,pana10, 'b-', label = 'Panasonic PM1.0')
-ax.plot(times,pana25, 'r-', label = 'Panasonic PM2.5')
+ax.plot(times,pana10, 'r-', label = 'Panasonic PM1.0')
+ax.plot(times,pana25, 'g-', label = 'Panasonic PM2.5')
+ax.plot(times,pana100, 'b-', label = 'Panasonic PM10')
 ax.set_title("Panasonic sensor readings")
 ax.set_ylabel('PM concentration (ug/m3)')
 ax.set_xlabel('time (s)')
@@ -79,8 +80,8 @@ def captureSerial():                 #main program
         print("Reading serial: ")
         filename = csvfile + "_" + time.strftime("%Y%m%d_%H-%M-%S") + ".csv"
 
-        lines = 0
-        header = 1;
+        lines = 0           
+        header = 1;         #header flag: 1 means incoming data is header and not readable
         while(lines<300):   #TODO: extend limit to like 1000s and make a gui with a stop button. otherwise, ^C keyboard interrupt in the console
         
             while(ArduinoStream.inWaiting() == 0):
@@ -123,13 +124,13 @@ def captureSerial():                 #main program
             lines += 1
             
     ArduinoStream.close
-
     print("\n\nWell, the moment has passed. Back to work")
     return 1
     
-def updatePlot():                               #redraw the plot
-    ax.plot(times,pana10, 'b-', label = 'Panasonic PM1.0')
-    ax.plot(times,pana25, 'r-', label = 'Panasonic PM2.5')
+def updatePlot():                               #redraw the plot. clumsy: you have to make sure to plot in the same colors that were initialized at the beginning
+    ax.plot(times,pana10, 'r-')
+    ax.plot(times,pana25, 'g-')
+    ax.plot(times,pana100, 'b-')
     
     plt.pause(0.0001)                           #this replaces .draw(), i guess
 
