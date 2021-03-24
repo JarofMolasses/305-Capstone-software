@@ -4,4 +4,4 @@ For rudimentary air quality measurement and filter evaluation. Arduino (oof) fir
 
 ### TODO: 
 1. document required arduino libraries or pack up all dependencies into main directory 
-2. python (or Matlab) processing script 
+2. add support for adafruit 3686 sensor
