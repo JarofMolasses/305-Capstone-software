@@ -1,6 +1,5 @@
 # 305-Capstone-software
-For rudimentary air quality measurement and filter evaluation. Arduino (oof) firmware.
-
+For rudimentary air quality measurement and filter evaluation. Arduino firmware (oof) and Python.
 
 ### TODO: 
 1. document required arduino libraries or pack up all dependencies into main directory 
