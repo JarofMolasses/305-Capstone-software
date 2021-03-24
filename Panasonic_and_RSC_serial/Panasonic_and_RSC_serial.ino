@@ -132,7 +132,7 @@ void loop() {
    
     Serial.print(",");
   } else {
-    Serial.print("n,n,n,");     //otherwise print -1 for sensor absent
+    Serial.print("n,n,n,");     //otherwise print something for sensor absent
   }
 
   if(adastatus == PRESENT){   //print adafruit data if preesnt. remember: need to manually set adafruit status (it's bad code, sorry)
@@ -152,7 +152,7 @@ void loop() {
     Serial.print(data.pm100_standard);
     Serial.print(",");
   } else {
-    Serial.print("n,n,n,");     //otherwise print -1 for sensor absent
+    Serial.print("n,n,n,");     //otherwise print something for sensor absent
   }
 
   Serial.print("\n");

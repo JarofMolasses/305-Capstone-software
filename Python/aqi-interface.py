@@ -65,6 +65,7 @@ def captureSerial():                 #main program
         
     if(port == ""):
         print("No Arduinos found, exiting.")
+        return 1
     else:                                   #main data processing and plot loop
         print("\nEnter log file name to begin: ")
         csvfile = input("")
