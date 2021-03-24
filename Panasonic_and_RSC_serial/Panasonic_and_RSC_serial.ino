@@ -123,7 +123,7 @@ void loop() {
   
     float pm2_5 = myAirSensor.getPM2_5();
     Serial.print(pm2_5, 2);
-    Serial.print(",");
+    Serial.print(","); 
     lcd0.setCursor(0,1);
     lcd0.print("PM2.5   "); lcd0.print(pm2_5);
     
