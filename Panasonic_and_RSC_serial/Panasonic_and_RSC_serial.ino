@@ -1,5 +1,5 @@
 /*
- * Print the pressure and particle data to Serial stream for analysis.
+   Print the pressure and particle data to Serial stream for analysis.
   circuit:
   pin name     pin number on Arduino
     DRDY         6
@@ -39,27 +39,21 @@ Honeywell_RSC rsc(
   CS_ADC_PIN  // chip select ADC (active-low)
 );
 
-volatile double CalibrationValue=0;
-unsigned long time=0;
+volatile double CalibrationValue = 0;
+unsigned long time = 0;
 int panastatus = ABSENT;       //panasonic sensor status
 int adastatus = ABSENT;       //adafruit sensor status. needs to be set manually in this implementation
 
 void setup() {
-  // open serial communication
-  Serial.begin(115200);
-  // open SPI communication
-  SPI.begin();
-  // open I2C communication
-  Wire.begin();
-  // open bitbanged UART 
-  pmSerial.begin(9600);
-  
-  lcd0.begin();
-  // allowtime to setup
-  delay(1000);
+  Serial.begin(115200);// open serial communication
+  SPI.begin();// open SPI communication
+  Wire.begin();// open I2C communication
+  pmSerial.begin(9600); // open bitbanged UART
 
-  // initialise pressure sensor
-  rsc.init();
+  lcd0.begin();
+  delay(500); // allow time to setup
+
+  rsc.init(); // initialise pressure sensor
 
   // print sensor information
   Serial.println();
@@ -82,19 +76,19 @@ void setup() {
   delay(5);
 
   pinMode(ANALOG_INPUT, INPUT);
-  CalibrationValue = rsc.get_pressure()*1000;
-  
-  if (myAirSensor.begin() == false){        //init panasonic sensor
+  CalibrationValue = rsc.get_pressure() * 1000;
+
+  if (myAirSensor.begin() == false) {       //init panasonic sensor
     Serial.println("Panasonic GCJA5 did not respond.");
-  } else{
+  } else {
     panastatus = PRESENT;
     Serial.println("GCJA5 Sensor present");
   }
 
-  if (aqi.begin_UART(&pmSerial) == false){
+  if (aqi.begin_UART(&pmSerial) == false) {
     //presently, the aqi.begin_UART function only returns true, see docs https://github.com/adafruit/Adafruit_PM25AQI/blob/master/Adafruit_PM25AQI.cpp
   }
-  if(adastatus == PRESENT){
+  if (adastatus == PRESENT) {
     Serial.println("ADAFRUIT sensor present");
   }
 
@@ -104,44 +98,43 @@ void setup() {
 
 int sec = 0;
 void loop() {
-  lcd0.clear();
   Serial.print(sec);
   Serial.print(",");
 
-  double pressure = (rsc.get_pressure()*1000-CalibrationValue)/1.1;
+  double pressure = (rsc.get_pressure() * 1000 - CalibrationValue) / 1.1;
   Serial.print(pressure);
   //Serial.print(rsc.get_pressure());
   Serial.print(",");
 
   lcd0.home();
-  lcd0.print("P (Pa)  "); lcd0.print(pressure);
-  
-  if(panastatus == PRESENT){    //print panasonic data if present
+  lcd0.print("P (Pa)           "); lcd0.setCursor(8,0); lcd0.print(pressure);
+
+  if (panastatus == PRESENT) {  //print panasonic data if present
     float pm1_0 = myAirSensor.getPM1_0();
     Serial.print(pm1_0, 2); //Print float with 2 decimals
     Serial.print(",");
-  
+
     float pm2_5 = myAirSensor.getPM2_5();
     Serial.print(pm2_5, 2);
-    Serial.print(","); 
-    lcd0.setCursor(0,1);
-    lcd0.print("PM2.5   "); lcd0.print(pm2_5);
-    
+    Serial.print(",");
+    lcd0.setCursor(0, 1);
+    lcd0.print("PM2.5           "); lcd0.setCursor(8,1); lcd0.print(pm2_5);
+
     float pm10 = myAirSensor.getPM10();
     Serial.print(pm10, 2);
-   
+
     Serial.print(",");
   } else {
     Serial.print("n,n,n,");     //otherwise print something for sensor absent
   }
 
-  if(adastatus == PRESENT){   //print adafruit data if preesnt. remember: need to manually set adafruit status (it's bad code, sorry)
+  if (adastatus == PRESENT) { //print adafruit data if preesnt. remember: need to manually set adafruit status (it's bad code, sorry)
     PM25_AQI_Data data;
 
-    if(! aqi.read(&data)){
+    if (! aqi.read(&data)) {
       Serial.println("Could not read from AQI");
-      delay(500);
-      return;
+      Serial.print("\n");
+      return;         // return to beginning of loop. probably not actually a good way to handle these errors but we'll see
     }
     Serial.print(data.pm10_standard);
     Serial.print(",");
