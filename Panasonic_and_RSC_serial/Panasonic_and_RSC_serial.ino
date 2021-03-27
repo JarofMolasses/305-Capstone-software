@@ -51,7 +51,7 @@ void setup() {
   pmSerial.begin(9600); // open bitbanged UART
 
   lcd0.begin();
-  delay(500); // allow time to setup
+  delay(1000); // allow time to setup
 
   rsc.init(); // initialise pressure sensor
 
@@ -122,7 +122,6 @@ void loop() {
 
     float pm10 = myAirSensor.getPM10();
     Serial.print(pm10, 2);
-
     Serial.print(",");
   } else {
     Serial.print("n,n,n,");     //otherwise print something for sensor absent
