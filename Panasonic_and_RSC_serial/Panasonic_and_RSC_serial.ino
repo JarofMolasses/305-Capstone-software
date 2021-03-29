@@ -91,9 +91,8 @@ void setup() {
   if (adastatus == PRESENT) {
     Serial.println("ADAFRUIT sensor present");
   }
-
-  Serial.println("Time (s), Pressure, GCJA5 ug/m3: PM1.0, PM2.5, PM10, ADAFRUIT ug/m3: PM1.0, PM2.5, PM10");
   Serial.println("End of Header");    //check for this in the python app
+  Serial.print("Time (s), Pressure, GCJA5 ug/m3: PM1.0, PM2.5, PM10, ADAFRUIT ug/m3: PM1.0, PM2.5, PM10,\n");
 }
 
 int sec = 0;

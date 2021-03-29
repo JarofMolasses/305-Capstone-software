@@ -108,24 +108,26 @@ def captureSerial(ArduinoStream, filename, header):
         print(data)
     else:                                   #extracting out all of the data, clumsily       
         print(datacols)    
+        try:
+            seconds = int(datacols[0])
+            pressure = float(datacols[1])
         
-        seconds = int(datacols[0])
-        pressure = float(datacols[1])
+            pm10pana = float(datacols[2])
+            pm25pana = float(datacols[3])
+            pm100pana = float(datacols[4])
         
-        pm10pana = float(datacols[2])
-        pm25pana = float(datacols[3])
-        pm100pana = float(datacols[4])
+            pm10ada = datacols[5]               #TODO: adafruit sensor, and still need to handle absent sensor detection
+            pm25ada = datacols[6]
+            pm100ada = datacols[7]
         
-        pm10ada = datacols[5]               #TODO: adafruit sensor, and still need to handle absent sensor detection
-        pm25ada = datacols[6]
-        pm100ada = datacols[7]
-        
-        times.append(seconds)               #append data to global panasonic arrays 
-        pana10.append(pm10pana)
-        pana25.append(pm25pana)
-        pana100.append(pm100pana)
+            times.append(seconds)               #append data to global panasonic arrays 
+            pana10.append(pm10pana)
+            pana25.append(pm25pana)
+            pana100.append(pm100pana)
       
-        updatePlot()
+            updatePlot()
+        except:
+            pass    
         
     with open(logs_folder/ filename, "a") as f:    
         if(header == 0):
