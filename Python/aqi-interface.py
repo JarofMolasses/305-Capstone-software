@@ -86,7 +86,7 @@ def main():                 #main program
 
         lines = 0         
         header = 1;
-        while(lines<300):   #TODO: replace with animation api (lines~frames), and add gui with interrupt
+        while(lines<252):   #TODO: replace with animation api (lines~frames), and add gui with interrupt
             header = captureSerial(ArduinoStream, filename, header)
             lines += 1
             
@@ -115,6 +115,12 @@ def captureSerial(ArduinoStream, filename, header):
             pm10pana = float(datacols[2])
             pm25pana = float(datacols[3])
             pm100pana = float(datacols[4])
+            count05 = int(datacols[5])
+            count10 = int(datacols[6])
+            count25 = int(datacols[7])
+            count50 = int(datacols[8])
+            count75 = int(datacols[9])
+            count100 = int(datacols[10])
         
             pm10ada = datacols[5]               #TODO: adafruit sensor, and still need to handle absent sensor detection
             pm25ada = datacols[6]

@@ -92,7 +92,7 @@ void setup() {
     Serial.println("ADAFRUIT sensor present");
   }
   Serial.println("End of Header");    //check for this in the python app
-  Serial.print("Time (s), Pressure, GCJA5 ug/m3: PM1.0, PM2.5, PM10, ADAFRUIT ug/m3: PM1.0, PM2.5, PM10,\n");
+  Serial.print("Time (s), Pressure, GCJA5 ug/m3: PM1.0, PM2.5, PM10, counts:0.5, 1.0, 2.5, 5.0, 7.5, 10, ADAFRUIT ug/m3: PM1.0, PM2.5, PM10,\n");
 }
 
 int sec = 0;
@@ -122,8 +122,32 @@ void loop() {
     float pm10 = myAirSensor.getPM10();
     Serial.print(pm10, 2);
     Serial.print(",");
+
+    unsigned int pc0_5 = myAirSensor.getPC0_5();
+    Serial.print(pc0_5);
+    Serial.print(",");
+  
+    unsigned int pc1_0 = myAirSensor.getPC1_0();
+    Serial.print(pc1_0);
+    Serial.print(",");
+  
+    unsigned int pc2_5 = myAirSensor.getPC2_5();
+    Serial.print(pc2_5);
+    Serial.print(",");
+  
+    unsigned int pc5_0 = myAirSensor.getPC5_0();
+    Serial.print(pc5_0);
+    Serial.print(",");
+  
+    unsigned int pc7_5 = myAirSensor.getPC7_5();
+    Serial.print(pc7_5);
+    Serial.print(",");
+  
+    unsigned int pc10 = myAirSensor.getPC10 ();
+    Serial.print(pc10);
+    Serial.print(",");
   } else {
-    Serial.print("n,n,n,");     //otherwise print something for sensor absent
+    Serial.print("n,n,n,n,n,n,n,n,n,");     //otherwise print something for sensor absent
   }
 
   if (adastatus == PRESENT) { //print adafruit data if preesnt. remember: need to manually set adafruit status (it's bad code, sorry)
