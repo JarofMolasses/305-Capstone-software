@@ -5,18 +5,21 @@
 
 % NOTE: matlab anova will only work with matrices, so no tables
 
+
+clear;
+close all;
 % Read in hand-compiled tables from spreadsheet (lame, yes i know)
 % Columns are different filter stacks (1-none, 2-carbon, 3-HEPA) 
-integrated = readmatrix('Processing - Integrated ANOVA.csv');
-peak = readmatrix('Processing - Peak ANOVA.csv');
+intarray = readmatrix('Processing - Integrated ANOVA.csv');
+peakarray = readmatrix('Processing - Peak ANOVA.csv');
 
 group =  {'Control', 'Carbon', 'HEPA'};
     
-[p, table, stats] = anova1(integrated,group);
-comp = multcompare(stats);
+[ppeak, ptable, peakstats] = anova1(peakarray,group);
+[intpeak, inttable, intstats] = anova1(intarray,group);
 
-p % the p(F) for the one way ANOVA
-p12 = comp(1,end)  % p-value for means of carbon, control
-p13 = comp(2,end)  % p-value for means of HEPA, control
-p23 = comp(3,end)  % p-value for means of HEPA, carbon
+figure;
+pcomp = multcompare(peakstats);
+figure;
+intcomp = multcompare(intstats);
 
